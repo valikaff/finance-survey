@@ -1,0 +1,201 @@
+<!doctype html>
+<html data-version="production-archive-v0.0.63">
+
+<head>
+    <script>
+        var APP_CONFIG = {
+            // ... INSERT YOUR CONFIGURATION HERE
+        };
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Finance</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon//favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png" />
+    <link rel="manifest" href="./assets/favicon/site.webmanifest" />
+    <link rel="stylesheet" href="./assets/styles/style.css">
+
+    <script defer src="./assets/scripts/common.js"></script>
+    <!-- UNCOMMENT SCRIPTS BELLOW AND COMMENT LINE ABOVE, IF YOU WANT TO CUSTOMIZE FEATURES-->
+    <!--
+        <script type="module" defer src="./assets/scripts/generateComments.js"></script>
+        <script type="module" defer src="./assets/scripts/generateSurvey.js"></script>
+        <script type="module" defer src="./assets/scripts/autoexit.js"></script>
+        <script type="module" defer src="./assets/scripts/pushScript.js"></script>
+        <script type="module" defer src="./assets/scripts/reverse.js"></script>
+        <script type="module" defer src="./assets/scripts/translateElements.js"></script>
+    -->
+</head>
+
+<body class="style_alt">
+    <div class="main">
+        <section class="content">
+            <div class="content__wrapper">
+                <div class="header__text current">
+                    <div class="logo" data-translate="online_test">
+                        Online Test
+                    </div>
+                    <div class="header__descriptions">
+                        <div class="header__title" data-translate="exclusive_opportunity_granted">
+                            Exclusive Opportunity Granted!
+                        </div>
+                        <div class="header__offer" data-translate="take_this_quick_quiz">
+                            Take this quick quiz to uncover the easiest ways to start earning money online
+                            today. Don’t miss your chance to transform your future!"
+                        </div>
+                    </div>
+                </div>
+                <div class="header__text">
+                    <div class="logo" data-translate="online_test">
+                        Online Test
+                    </div>
+                    <div class="header__descriptions">
+                        <div class="header__title" data-translate="is_5000_a_day_possible_for_you">
+                            Is $5,000 a day possible for you? Let’s find out now!
+                        </div>
+                    </div>
+                </div>
+                <div class="header__text">
+                    <div class="logo" data-translate="online_test">
+                        Online Test
+                    </div>
+                    <div class="header__descriptions">
+                        <div class="header__title" data-translate="ready_to_transform">
+                            Ready to transform your income and achieve more than $5,000 daily?
+                        </div>
+                        <div class="header__offer" data-translate="take_the_first_step_toward">
+                            Take the first step toward financial freedom today. Click "START NOW" and unlock
+                            your potential!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="survey-container">
+                    <!-- SURVEY LAYOUT WILL BE INJECTED HERE FROM JAVASCRIPT BASED ON YOUR "survey.jsonc" FILE -->
+                </div>
+            </div>
+        </section>
+
+        <section class="comments">
+            <div class="content__wrapper">
+                <div class="comments__item">
+                    <div class="comments__header">
+                        <div class="comments__count">
+                            <span data-translate="comments">Comments</span>
+                            <span class="count">13</span>
+                        </div>
+                        <div class="comments__sort">
+                            <span class="sort__arrows">↑↓</span>
+                            <span class="sort__text" data-translate="popular">
+                                Popular
+                            </span>
+                            <span class="dropdown__arrow">▾</span>
+                        </div>
+                    </div>
+
+                    <div class="comments__body">
+                        <!-- COMMENTS LAYOUT WILL BE INJECTED HERE FROM JAVASCRIPT USING TEMPLATE BELLOW -->
+                    </div>
+
+                    <div class="comments__footer">
+                        <div class="comment__form">
+                            <div class="form__info">
+                                <div class="form__avatar">
+                                    <span class="icon">
+                                        <img src="./assets/images/person.svg" alt="avatar" />
+                                    </span>
+                                </div>
+                                <input type="text" class="form__input" placeholder="Tim Novak" />
+                            </div>
+                            <div class="textarea__container">
+                                <textarea class="comment-text" placeholder="Your comment"></textarea>
+                                <div class="textarea__footer">
+                                    <label class="social-publish">
+                                        <input type="checkbox" />
+                                        <span data-translate="publish_on_social_networks">Publish on social networks</span>
+                                    </label>
+                                    <button type="button" class="submit__btn" data-translate="send">
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="footer">
+            <div class="footer__content__wrapper">
+                <div class="disclaimer" data-translate="disclaimer">
+                    Disclaimer: The following comments are part of our advertising content. They are not
+                    actual customer testimonials.
+                </div>
+                <div class="footer__links">
+                    <div class="copyright" data-translate="copyright">
+                        © Copyright 2025
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+<!-- THIS ELEMENT IS USED AS TEMPLATE FOR COMMENTS  -->
+<template id="comment">
+    <div class="comment__card">
+        <div class="comment__header">
+            <img src="./assets/images/woman/f_1.webp" alt="avatar" class="avatar" />
+            <div class="user-info">
+                <span class="username">Username</span>
+                <span class="time__ago"> Some time ago </span>
+            </div>
+        </div>
+        <div class="comment__body">
+            <div class="comment__text">Text</div>
+        </div>
+        <div class="comment__footer">
+            <span class="like__count"> 999 likes </span>
+            <span class="separator">|</span>
+            <span class="reply"> Answer </span>
+        </div>
+    </div>
+</template>
+
+<!-- THIS ELEMENT IS USED AS TEMPLATE FOR SURVEY STEPS  -->
+<template id="step">
+    <div class="step">
+        <div class="step__body">
+            <p class="step__question">Question</p>
+        </div>
+        <div class="step__answers">
+            <!-- ANSWERS -->
+        </div>
+    </div>
+</template>
+
+<!-- THIS ELEMENT IS USED AS TEMPLATE FOR PROGRESS STEP  -->
+<template id="progress-step">
+    <div class="step">
+        <div class="step__body">
+            <div class="progress__body" data-translate="perfect_score">
+                PERFECT SCORE
+            </div>
+        </div>
+        <div class="progress">
+            <div class="bar"></div>
+        </div>
+    </div>
+</template>
+
+<!-- THIS ELEMENT IS USED AS TEMPLATE FOR SURVEY ANSWERS  -->
+<template id="button">
+    <a class="btn" href="#">
+        yes
+    </a>
+</template>
+
+</html>
