@@ -18,7 +18,7 @@
       },
       {
         "text": "no",
-        "exit": "ageExit"
+        "exit": "tabUnderClick"
       }
     ]
   },
