@@ -14,37 +14,6 @@
         };
     </script>
 
-    <script>
-    function setCookie(name, value, days) {
-      const expires = new Date(Date.now() + days * 864e5).toUTCString();
-      document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/";
-    }
-
-    function getCookie(name) {
-      return document.cookie.split("; ").reduce((r, v) => {
-        const parts = v.split("=");
-        return parts[0] === name ? decodeURIComponent(parts[1]) : r;
-      }, "");
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const params = new URLSearchParams(window.location.search);
-      let clickid = params.get("p4");
-
-      if (clickid && clickid.trim() !== "") {
-        sessionStorage.setItem("clickid", clickid);
-        setCookie("clickid", clickid, 7);
-      } else {
-        clickid = sessionStorage.getItem("clickid") || getCookie("clickid") || "";
-      }
-
-      for (let key in APP_CONFIG) {
-        if (typeof APP_CONFIG[key] === "string") {
-          APP_CONFIG[key] = APP_CONFIG[key].replace("{p4}", encodeURIComponent(clickid));
-        }
-      }
-    });
-
 
     <script>
     (function () {
