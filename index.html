@@ -17,6 +17,21 @@
     </script>
 
     <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const clickid = params.get("p4");
+
+      if (clickid) {
+        for (let key in APP_CONFIG) {
+          if (typeof APP_CONFIG[key] === "string") {
+            APP_CONFIG[key] = APP_CONFIG[key].replace("{p4}", encodeURIComponent(clickid));
+          }
+        }
+      }
+    });
+    </script>
+
+    <script>
     (function () {
       const domain = window.location.hostname;
       const params = new URLSearchParams(window.location.search);
