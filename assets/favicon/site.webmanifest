@@ -1,6 +1,6 @@
 {
-    "name": "BigMoney",
-    "short_name": "BigMoney",
+    "name": "MyWebSite",
+    "short_name": "MySite",
     "icons": [
         {
             "src": "./android-chrome-192x192.png",
@@ -19,3 +19,6 @@
     "background_color": "#ffffff",
     "display": "standalone"
 }
+
+
+
