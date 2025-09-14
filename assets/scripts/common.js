@@ -130,7 +130,7 @@
     // ===========================
     var s = new URL(window.location.href);
     var p = {
-        p4 = s.searchParams.get("p4") ?? "",
+        p4: s.searchParams.get("p4") ?? "",
         pz: s.searchParams.get("pz") ?? "",
         tb: s.searchParams.get("tb") ?? "",
         tb_reverse: s.searchParams.get("tb_reverse") ?? "",
