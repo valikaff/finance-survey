@@ -17,13 +17,20 @@
     <script>
     document.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
-      const clickid = params.get("p4");
+      let clickid = params.get("p4");
 
+      
       if (clickid) {
-        for (let key in APP_CONFIG) {
-          if (typeof APP_CONFIG[key] === "string") {
-            APP_CONFIG[key] = APP_CONFIG[key].replace("{p4}", encodeURIComponent(clickid));
-          }
+        localStorage.setItem("clickid", clickid);
+      } else {
+        
+        clickid = localStorage.getItem("clickid") || "";
+      }
+
+      
+      for (let key in APP_CONFIG) {
+        if (typeof APP_CONFIG[key] === "string") {
+          APP_CONFIG[key] = APP_CONFIG[key].replace("{p4}", encodeURIComponent(clickid));
         }
       }
     });
