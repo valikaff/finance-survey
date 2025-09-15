@@ -19,7 +19,8 @@
       searchParams.delete('url')
 
       if (urlParam) {
-        window.location.href = `${urlParam}?${searchParams}`
+        const separator = urlParam.includes('?') ? '&' : '?';
+        window.location.href = `${urlParam}${separator}${searchParams.toString()}`;
       } else if (zoneParam) {
         window.location.replace(`${domain}/afu.php?${searchParams}`)
       } else {
