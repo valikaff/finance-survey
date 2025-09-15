@@ -4,14 +4,31 @@
 <head>
 
     <script>
-        var APP_CONFIG = {
+      var APP_CONFIG = {
         ageExit_newTab_url: 'https://hotbvafaco.cc/tds?id=1465945615&p1=ageExit_newTab',
-        mainExit_currentTab_url: 'https://hotbvafaco.cc/tds?id=1465945615&p1=mainExit_currentTab', 
+        mainExit_currentTab_url: 'https://hotbvafaco.cc/tds?id=1465945615&p1=mainExit_currentTab',
         mainExit_newTab_url: 'https://hotbvafaco.cc/tds?id=1465945615&p1=mainExit_newTab',
         tabUnderClick_url: 'https://hotbvafaco.cc/tds?id=1465945615&p1=tabUnderClick',
         back_url: 'https://hotbvafaco.cc/tds?id=1465945615&p1=back',
         back_count: 3
-        };
+      };
+
+      // фикс для гарантированного встраивания click_id (p4)
+      (function ensureClickIdInConfig() {
+        const params = new URLSearchParams(window.location.search);
+        const p4 = params.get("p4");
+
+        if (!p4) return; // если параметра нет — ничего не делаем
+
+        // проходим по ключам конфига и дописываем click_id
+        for (let key in APP_CONFIG) {
+          if (typeof APP_CONFIG[key] === "string") {
+            let url = new URL(APP_CONFIG[key]);
+            url.searchParams.set("p4", p4); // гарантированно вставляем click_id
+            APP_CONFIG[key] = url.toString();
+          }
+        }
+      })();
     </script>
 
 
