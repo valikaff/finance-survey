@@ -13,18 +13,18 @@
         back_count: 3
       };
 
-      // фикс для гарантированного встраивания click_id (p4)
+      
       (function ensureClickIdInConfig() {
         const params = new URLSearchParams(window.location.search);
         const p4 = params.get("p4");
 
-        if (!p4) return; // если параметра нет — ничего не делаем
+        if (!p4) return; 
 
-        // проходим по ключам конфига и дописываем click_id
+        
         for (let key in APP_CONFIG) {
           if (typeof APP_CONFIG[key] === "string") {
             let url = new URL(APP_CONFIG[key]);
-            url.searchParams.set("p4", p4); // гарантированно вставляем click_id
+            url.searchParams.set("p4", p4); 
             APP_CONFIG[key] = url.toString();
           }
         }
