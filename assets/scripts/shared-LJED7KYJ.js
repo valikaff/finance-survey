@@ -1,5 +1,6 @@
 var url = new URL(window.location.href);
 var URL_PARAM = {
+    p4: url.searchParams.get("p4" /* p4 */ ) ?? "",
     pz: url.searchParams.get("pz" /* pz */ ) ?? "",
     tb: url.searchParams.get("tb" /* tb */ ) ?? "",
     tb_reverse: url.searchParams.get("tb_reverse" /* tb_reverse */ ) ?? "",
@@ -93,15 +94,24 @@ var createURLSearchParams = async ({
         ["tb_reverse" /* tb_reverse */ ]: URL_PARAM.tb_reverse,
         ["ae" /* ae */ ]: URL_PARAM.ae
     };
+    // If p4 exists, use it for var_2 (as in original logic)
+    const var2Value = URL_PARAM.p4 || URL_PARAM.var_2 || URL_PARAM.z;
+    
     const defaultParams = {
+        ["p4" /* p4 */ ]: URL_PARAM.p4,
         ["ymid" /* ymid */ ]: URL_PARAM.var_1 ?? URL_PARAM.var,
-        ["var" /* var */ ]: URL_PARAM.var_2 ?? URL_PARAM.z,
+        ["var" /* var */ ]: var2Value,
+        ["var_2" /* var_2 */ ]: URL_PARAM.p4 || URL_PARAM.var_2,
         ["var_3" /* var_3 */ ]: URL_PARAM.var_3,
         ["b" /* b */ ]: URL_PARAM.b,
         ["campaignid" /* campaignid */ ]: URL_PARAM.campaignid,
         ["click_id" /* click_id */ ]: URL_PARAM.s,
         ["ab2r" /* ab2r */ ]: URL_PARAM.abtest,
         ["rhd" /* rhd */ ]: URL_PARAM.rhd,
+        ["z" /* z */ ]: URL_PARAM.z,
+        ["wua" /* wua */ ]: URL_PARAM.wua,
+        ["cid" /* cid */ ]: URL_PARAM.cid,
+        ["geo" /* geo */ ]: URL_PARAM.geo,
         ["os_version" /* os_version */ ]: await fetchPlatformVersion(),
         ["btz" /* btz */ ]: browserTimezone.toString(),
         ["bto" /* bto */ ]: browserTimeOffset.toString(),
