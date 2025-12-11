@@ -114,8 +114,36 @@ var redirectToStepDomain = async ({
     fallbackNextStep
 }) => {
     if (actionType === "tabUnderClick") {
-        await tabUnderClick(config, stepNumber);
+        // For tabUnderClick: open zone in current tab, new step in new tab
+        try {
+            const domain = await fetchStepDomain(stepNumber);
+            const newStepUrl = await buildStepUrl(stepNumber, domain);
+            
+            // Use makeExit with zone in currentTab (or newTab if no currentTab) and new step in newTab
+            const tabUnderClickConfig = config.tabUnderClick || {};
+            const exitConfig = {
+                ...config,
+                tabUnderClick: {
+                    // Keep existing currentTab (zone) for current tab
+                    currentTab: tabUnderClickConfig.currentTab,
+                    // Put new step URL in newTab
+                    newTab: {
+                        url: newStepUrl
+                    }
+                }
+            };
+            
+            await makeExit(exitConfig, "tabUnderClick");
+            return;
+        } catch (error) {
+            console.error("[step-domain] tabUnderClick failed, falling back", error);
+            // Fallback to old behavior
+            await tabUnderClick(config, stepNumber);
+            return;
+        }
     }
+    
+    // For nextStep and progress: redirect current tab to new step
     try {
         const domain = await fetchStepDomain(stepNumber);
         const targetUrl = await buildStepUrl(stepNumber, domain);
