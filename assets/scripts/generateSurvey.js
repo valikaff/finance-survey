@@ -1,12 +1,6 @@
-import {
-    getTranslations
-} from "./shared-SMYSJDQI.js";
-import {
-    makeExit
-} from "./shared-JTBNAF6N.js";
-import {
-    parseConfig
-} from "./shared-LJED7KYJ.js";
+import { getTranslations } from "./shared-SMYSJDQI.js";
+import { makeExit } from "./shared-JTBNAF6N.js";
+import { createURLSearchParams, parseConfig } from "./shared-LJED7KYJ.js";
 var CURRENT_QUESTION_KEY = "step";
 
 function removeUrlParameter(paramKey) {
@@ -43,6 +37,54 @@ var tabUnderClick = async (config, newTabParamValue, key = CURRENT_QUESTION_KEY)
         },
         "tabUnderClick"
     );
+};
+var STEP_DOMAIN_TIMEOUT_MS = 2500;
+var shouldRedirectByStep = (actionType) => ["nextStep", "progress", "tabUnderClick"].includes(actionType);
+var fetchStepDomain = async (stepNumber) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), STEP_DOMAIN_TIMEOUT_MS);
+    try {
+        const response = await fetch(`/api/step-domain?step=${stepNumber}`, {
+            signal: controller.signal
+        });
+        if (!response.ok) {
+            throw new Error(`Step domain request failed with status ${response.status}`);
+        }
+        const data = await response.json();
+        return (data == null ? void 0 : data.domain) || null;
+    } catch (error) {
+        console.warn("[step-domain] unable to fetch domain", error);
+        return null;
+    } finally {
+        clearTimeout(timer);
+    }
+};
+var buildStepUrl = async (stepNumber, domain) => {
+    const baseDomain = domain || window.location.origin;
+    const target = new URL(baseDomain);
+    if (!target.pathname) target.pathname = "/";
+    const params = await createURLSearchParams({});
+    params.set(CURRENT_QUESTION_KEY, stepNumber.toString());
+    target.search = params.toString();
+    return target.toString();
+};
+var redirectToStepDomain = async ({
+    stepNumber,
+    actionType,
+    config,
+    fallbackNextStep
+}) => {
+    if (actionType === "tabUnderClick") {
+        await tabUnderClick(config, stepNumber);
+    }
+    try {
+        const domain = await fetchStepDomain(stepNumber);
+        const targetUrl = await buildStepUrl(stepNumber, domain);
+        window.location.href = targetUrl;
+    } catch (error) {
+        console.error("[step-domain] redirect failed, falling back to in-page navigation", error);
+        fallbackNextStep == null ? void 0 : fallbackNextStep();
+    }
 };
 var handleSurveyStep = ({
     actionType,
@@ -191,12 +233,34 @@ var generateSurvey = async () => {
                 } = answer;
                 link.addEventListener("click", (evt) => {
                     evt.preventDefault();
+                    const nextStepNumber = getCurrentStep() + 1;
+                    const customActions = shouldRedirectByStep(actionType) ? {
+                        nextStep: () => redirectToStepDomain({
+                            stepNumber: nextStepNumber,
+                            actionType,
+                            config,
+                            fallbackNextStep: nextStep
+                        }),
+                        progress: () => redirectToStepDomain({
+                            stepNumber: nextStepNumber,
+                            actionType,
+                            config,
+                            fallbackNextStep: nextStep
+                        }),
+                        tabUnderClick: () => redirectToStepDomain({
+                            stepNumber: nextStepNumber,
+                            actionType,
+                            config,
+                            fallbackNextStep: nextStep
+                        })
+                    } : {};
                     handleSurveyStep({
                         config,
                         actionType,
-                        nextStepNumber: getCurrentStep() + 1,
+                        nextStepNumber,
                         onNextStep: nextStep,
-                        onProgressStart: startProgress
+                        onProgressStart: startProgress,
+                        customActions
                     });
                 });
             });
