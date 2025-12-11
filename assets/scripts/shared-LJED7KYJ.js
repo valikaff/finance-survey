@@ -94,24 +94,16 @@ var createURLSearchParams = async ({
         ["tb_reverse" /* tb_reverse */ ]: URL_PARAM.tb_reverse,
         ["ae" /* ae */ ]: URL_PARAM.ae
     };
-    // If p4 exists, use it for var_2 (as in original logic)
-    const var2Value = URL_PARAM.p4 || URL_PARAM.var_2 || URL_PARAM.z;
-    
     const defaultParams = {
-        ["p4" /* p4 */ ]: URL_PARAM.p4,
+        ["p4" /* p4 */ ]: URL_PARAM.p4 ?? URL_PARAM.var,
         ["ymid" /* ymid */ ]: URL_PARAM.var_1 ?? URL_PARAM.var,
-        ["var" /* var */ ]: var2Value,
-        ["var_2" /* var_2 */ ]: URL_PARAM.p4 || URL_PARAM.var_2,
+        ["var" /* var */ ]: URL_PARAM.var_2 ?? URL_PARAM.z,
         ["var_3" /* var_3 */ ]: URL_PARAM.var_3,
         ["b" /* b */ ]: URL_PARAM.b,
         ["campaignid" /* campaignid */ ]: URL_PARAM.campaignid,
         ["click_id" /* click_id */ ]: URL_PARAM.s,
         ["ab2r" /* ab2r */ ]: URL_PARAM.abtest,
         ["rhd" /* rhd */ ]: URL_PARAM.rhd,
-        ["z" /* z */ ]: URL_PARAM.z,
-        ["wua" /* wua */ ]: URL_PARAM.wua,
-        ["cid" /* cid */ ]: URL_PARAM.cid,
-        ["geo" /* geo */ ]: URL_PARAM.geo,
         ["os_version" /* os_version */ ]: await fetchPlatformVersion(),
         ["btz" /* btz */ ]: browserTimezone.toString(),
         ["bto" /* bto */ ]: browserTimeOffset.toString(),
