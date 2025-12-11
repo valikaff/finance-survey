@@ -327,8 +327,10 @@ app.get("/admin", (req, res) => {
 });
 
 // Fallback to SPA entry for all non-API routes
-app.get("*", (req, res) => {
-  if (req.path.startsWith("/api")) return res.status(404).end();
+app.use((req, res, next) => {
+  if (req.path.startsWith("/api")) {
+    return res.status(404).end();
+  }
   res.sendFile(path.join(rootDir, "index.html"));
 });
 
