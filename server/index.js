@@ -1,11 +1,16 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import pkg from "pg";
 
 dotenv.config();
 
 const { Pool } = pkg;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.join(__dirname, "..");
 
 // Support both DATABASE_URL (full connection string) and individual env vars
 let poolConfig;
@@ -44,6 +49,7 @@ const pool = new Pool(poolConfig);
 const app = express();
 app.use(cors({ origin: process.env.CORS_ORIGIN || "*", methods: ["GET"] }));
 app.use(express.json());
+app.use(express.static(rootDir));
 
 const port = Number(process.env.PORT) || 3001;
 
@@ -103,6 +109,12 @@ app.get("/api/step-domain", async (req, res) => {
 
 app.get("/healthz", (req, res) => {
   res.json({ ok: true });
+});
+
+// Fallback to SPA entry for all non-API routes
+app.get("*", (req, res) => {
+  if (req.path.startsWith("/api")) return res.status(404).end();
+  res.sendFile(path.join(rootDir, "index.html"));
 });
 
 app.listen(port, () => {

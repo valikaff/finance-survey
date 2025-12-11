@@ -5,6 +5,7 @@
 - Env vars: Use `DATABASE_URL` (full connection string from Render) OR individual `PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD` (see `env.example`).
 - Endpoint: `GET /api/step-domain?step=N` → `{ domain }` (round-robin by `last_used`, only `active=true` rows).
 - Health: `GET /healthz`.
+- Static serving: the same service now serves the landing (`index.html` + assets) from the repo root, with a wildcard fallback for non-API routes.
 
 #### Suggested schema
 ```sql
