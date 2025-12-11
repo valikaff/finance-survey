@@ -125,7 +125,12 @@ var createURLSearchParams = async ({
     }) : searchParams;
 };
 var getUrl = async (zone, domain, passParamToParams) => {
-    const url2 = new URL(`${domain}/${"afu.php" /* afu */}`);
+    // Clean domain: remove pathname and search params, keep only origin
+    const domainUrl = new URL(domain);
+    const cleanDomain = `${domainUrl.protocol}//${domainUrl.host}`;
+    
+    // Build clean URL with afu.php path
+    const url2 = new URL(`${cleanDomain}/afu.php`);
     const searchParams = await createURLSearchParams({
         zone: zone.toString(),
         passParamToParams
