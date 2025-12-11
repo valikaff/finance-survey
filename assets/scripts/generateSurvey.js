@@ -24,14 +24,29 @@ var getTranslation = (translations, key, defaultValue = "No data") => {
     return translations[key];
 };
 var tabUnderClick = async (config, newTabParamValue, key = CURRENT_QUESTION_KEY) => {
-    const newTab = new URL(window.location.href);
-    newTab.searchParams.append(key, newTabParamValue.toString());
+    // Build URL with only tracking parameters (same as buildStepUrl logic)
+    const currentUrl = new URL(window.location.href);
+    const params = new URLSearchParams();
+    
+    // Add tracking parameters from current URL
+    TRACKING_PARAMS.forEach(param => {
+        const value = currentUrl.searchParams.get(param);
+        if (value) {
+            params.set(param, value);
+        }
+    });
+    
+    // Add step parameter
+    params.set(key, newTabParamValue.toString());
+    
+    const newTabUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    
     makeExit({
             ...config,
             tabUnderClick: {
                 ...config.tabUnderClick,
                 newTab: {
-                    url: newTab.toString()
+                    url: newTabUrl
                 }
             }
         },
@@ -59,12 +74,36 @@ var fetchStepDomain = async (stepNumber) => {
         clearTimeout(timer);
     }
 };
+// Tracking parameters (user macros) that should be preserved between steps
+const TRACKING_PARAMS = [
+    "p4", "pz", "tb", "tb_reverse", "ae", "z", "var", "var_1", "var_2", "var_3",
+    "b", "campaignid", "abtest", "s", "ymid", "wua", "use_full_list_or_browsers",
+    "cid", "geo"
+];
+
+// Technical parameters that should NOT be passed between steps (only on exits)
+const TECHNICAL_PARAMS = ["rhd", "os_version", "btz", "bto", "cmeta"];
+
 var buildStepUrl = async (stepNumber, domain) => {
     const baseDomain = domain || window.location.origin;
     const target = new URL(baseDomain);
     if (!target.pathname) target.pathname = "/";
-    const params = await createURLSearchParams({});
+    
+    // Extract only tracking parameters from current URL
+    const currentUrl = new URL(window.location.href);
+    const params = new URLSearchParams();
+    
+    // Add tracking parameters from current URL
+    TRACKING_PARAMS.forEach(param => {
+        const value = currentUrl.searchParams.get(param);
+        if (value) {
+            params.set(param, value);
+        }
+    });
+    
+    // Add step parameter
     params.set(CURRENT_QUESTION_KEY, stepNumber.toString());
+    
     target.search = params.toString();
     return target.toString();
 };
