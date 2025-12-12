@@ -94,7 +94,7 @@ var createURLSearchParams = async ({
         ["tb_reverse" /* tb_reverse */ ]: URL_PARAM.tb_reverse,
         ["ae" /* ae */ ]: URL_PARAM.ae
     };
-    // Get all parameters from current URL
+    // Get all parameters from current URL (always use fresh values from current page)
     const currentUrl = new URL(window.location.href);
     const allUrlParams = {};
     currentUrl.searchParams.forEach((value, key) => {
@@ -104,47 +104,48 @@ var createURLSearchParams = async ({
         }
     });
     
-    // Start with all URL parameters
+    // Start with all URL parameters from current page
     const defaultParams = { ...allUrlParams };
     
-    // Override with specific logic for known parameters
-    if (URL_PARAM.p4 || URL_PARAM.var) {
+    // Apply fallback logic only if parameter is missing from current URL
+    // This ensures parameters from current step URL are preserved
+    if (!defaultParams["p4" /* p4 */ ] && (URL_PARAM.p4 || URL_PARAM.var)) {
         defaultParams["p4" /* p4 */ ] = URL_PARAM.p4 ?? URL_PARAM.var;
     }
-    if (URL_PARAM.var_1 || URL_PARAM.var) {
+    if (!defaultParams["ymid" /* ymid */ ] && (URL_PARAM.var_1 || URL_PARAM.var)) {
         defaultParams["ymid" /* ymid */ ] = URL_PARAM.var_1 ?? URL_PARAM.var;
     }
-    if (URL_PARAM.var_2 || URL_PARAM.z) {
+    if (!defaultParams["var" /* var */ ] && (URL_PARAM.var_2 || URL_PARAM.z)) {
         defaultParams["var" /* var */ ] = URL_PARAM.var_2 ?? URL_PARAM.z;
     }
-    if (URL_PARAM.var_3) {
+    if (!defaultParams["var_3" /* var_3 */ ] && URL_PARAM.var_3) {
         defaultParams["var_3" /* var_3 */ ] = URL_PARAM.var_3;
     }
-    if (URL_PARAM.b) {
+    if (!defaultParams["b" /* b */ ] && URL_PARAM.b) {
         defaultParams["b" /* b */ ] = URL_PARAM.b;
     }
-    if (URL_PARAM.campaignid) {
+    if (!defaultParams["campaignid" /* campaignid */ ] && URL_PARAM.campaignid) {
         defaultParams["campaignid" /* campaignid */ ] = URL_PARAM.campaignid;
     }
-    if (URL_PARAM.s) {
+    if (!defaultParams["click_id" /* click_id */ ] && URL_PARAM.s) {
         defaultParams["click_id" /* click_id */ ] = URL_PARAM.s;
     }
-    if (URL_PARAM.abtest !== undefined) {
+    if (!defaultParams["ab2r" /* ab2r */ ] && URL_PARAM.abtest !== undefined) {
         defaultParams["ab2r" /* ab2r */ ] = URL_PARAM.abtest;
     }
-    if (URL_PARAM.rhd) {
+    if (!defaultParams["rhd" /* rhd */ ] && URL_PARAM.rhd) {
         defaultParams["rhd" /* rhd */ ] = URL_PARAM.rhd;
     }
-    if (URL_PARAM.z) {
+    if (!defaultParams["z" /* z */ ] && URL_PARAM.z) {
         defaultParams["z" /* z */ ] = URL_PARAM.z;
     }
-    if (URL_PARAM.wua) {
+    if (!defaultParams["wua" /* wua */ ] && URL_PARAM.wua) {
         defaultParams["wua" /* wua */ ] = URL_PARAM.wua;
     }
-    if (URL_PARAM.cid) {
+    if (!defaultParams["cid" /* cid */ ] && URL_PARAM.cid) {
         defaultParams["cid" /* cid */ ] = URL_PARAM.cid;
     }
-    if (URL_PARAM.geo) {
+    if (!defaultParams["geo" /* geo */ ] && URL_PARAM.geo) {
         defaultParams["geo" /* geo */ ] = URL_PARAM.geo;
     }
     
