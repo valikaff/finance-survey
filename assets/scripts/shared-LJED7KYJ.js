@@ -94,25 +94,66 @@ var createURLSearchParams = async ({
         ["tb_reverse" /* tb_reverse */ ]: URL_PARAM.tb_reverse,
         ["ae" /* ae */ ]: URL_PARAM.ae
     };
-    const defaultParams = {
-        ["p4" /* p4 */ ]: URL_PARAM.p4 ?? URL_PARAM.var,
-        ["ymid" /* ymid */ ]: URL_PARAM.var_1 ?? URL_PARAM.var,
-        ["var" /* var */ ]: URL_PARAM.var_2 ?? URL_PARAM.z,
-        ["var_3" /* var_3 */ ]: URL_PARAM.var_3,
-        ["b" /* b */ ]: URL_PARAM.b,
-        ["campaignid" /* campaignid */ ]: URL_PARAM.campaignid,
-        ["click_id" /* click_id */ ]: URL_PARAM.s,
-        ["ab2r" /* ab2r */ ]: URL_PARAM.abtest,
-        ["rhd" /* rhd */ ]: URL_PARAM.rhd,
-        ["z" /* z */ ]: URL_PARAM.z,
-        ["wua" /* wua */ ]: URL_PARAM.wua,
-        ["cid" /* cid */ ]: URL_PARAM.cid,
-        ["geo" /* geo */ ]: URL_PARAM.geo,
-        ["os_version" /* os_version */ ]: await fetchPlatformVersion(),
-        ["btz" /* btz */ ]: browserTimezone.toString(),
-        ["bto" /* bto */ ]: browserTimeOffset.toString(),
-        ["cmeta" /* cmeta */ ]: cmeta
-    };
+    // Get all parameters from current URL
+    const currentUrl = new URL(window.location.href);
+    const allUrlParams = {};
+    currentUrl.searchParams.forEach((value, key) => {
+        // Skip 'step' parameter as it's only for internal navigation
+        if (key !== "step") {
+            allUrlParams[key] = value;
+        }
+    });
+    
+    // Start with all URL parameters
+    const defaultParams = { ...allUrlParams };
+    
+    // Override with specific logic for known parameters
+    if (URL_PARAM.p4 || URL_PARAM.var) {
+        defaultParams["p4" /* p4 */ ] = URL_PARAM.p4 ?? URL_PARAM.var;
+    }
+    if (URL_PARAM.var_1 || URL_PARAM.var) {
+        defaultParams["ymid" /* ymid */ ] = URL_PARAM.var_1 ?? URL_PARAM.var;
+    }
+    if (URL_PARAM.var_2 || URL_PARAM.z) {
+        defaultParams["var" /* var */ ] = URL_PARAM.var_2 ?? URL_PARAM.z;
+    }
+    if (URL_PARAM.var_3) {
+        defaultParams["var_3" /* var_3 */ ] = URL_PARAM.var_3;
+    }
+    if (URL_PARAM.b) {
+        defaultParams["b" /* b */ ] = URL_PARAM.b;
+    }
+    if (URL_PARAM.campaignid) {
+        defaultParams["campaignid" /* campaignid */ ] = URL_PARAM.campaignid;
+    }
+    if (URL_PARAM.s) {
+        defaultParams["click_id" /* click_id */ ] = URL_PARAM.s;
+    }
+    if (URL_PARAM.abtest !== undefined) {
+        defaultParams["ab2r" /* ab2r */ ] = URL_PARAM.abtest;
+    }
+    if (URL_PARAM.rhd) {
+        defaultParams["rhd" /* rhd */ ] = URL_PARAM.rhd;
+    }
+    if (URL_PARAM.z) {
+        defaultParams["z" /* z */ ] = URL_PARAM.z;
+    }
+    if (URL_PARAM.wua) {
+        defaultParams["wua" /* wua */ ] = URL_PARAM.wua;
+    }
+    if (URL_PARAM.cid) {
+        defaultParams["cid" /* cid */ ] = URL_PARAM.cid;
+    }
+    if (URL_PARAM.geo) {
+        defaultParams["geo" /* geo */ ] = URL_PARAM.geo;
+    }
+    
+    // Technical parameters are always generated fresh (override URL values)
+    defaultParams["os_version" /* os_version */ ] = await fetchPlatformVersion();
+    defaultParams["btz" /* btz */ ] = browserTimezone.toString();
+    defaultParams["bto" /* bto */ ] = browserTimeOffset.toString();
+    defaultParams["cmeta" /* cmeta */ ] = cmeta;
+    
     if (zone) defaultParams["zoneid" /* zoneid */ ] = zone;
     Object.entries(optionallySearchParams).forEach(([key, value]) => {
         if (value) defaultParams[key] = value;
