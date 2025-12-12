@@ -252,8 +252,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="domain">Домен (с https://):</label>
-                        <input type="url" id="domain" placeholder="https://example.com" required>
+                        <label for="domain">Домен:</label>
+                        <input type="text" id="domain" placeholder="example.com или https://example.com" required>
+                        <div class="help-text">https:// будет добавлен автоматически, если не указан</div>
                     </div>
                     <div class="form-group">
                         <label>
@@ -284,9 +285,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="bulkDomains">Домены (по одному на строку, с https://):</label>
-                        <textarea id="bulkDomains" placeholder="https://example1.com&#10;https://example2.com&#10;https://example3.com" required></textarea>
-                        <div class="help-text">Введите домены, каждый с новой строки. Все домены будут добавлены для выбранного шага.</div>
+                        <label for="bulkDomains">Домены (по одному на строку):</label>
+                        <textarea id="bulkDomains" placeholder="example1.com&#10;example2.com&#10;https://example3.com" required></textarea>
+                        <div class="help-text">Введите домены, каждый с новой строки. https:// будет добавлен автоматически, если не указан.</div>
                     </div>
                     <div class="form-group">
                         <label>
@@ -309,6 +310,17 @@
 
     <script>
         const API_BASE = window.location.origin;
+
+        function normalizeDomain(domain) {
+            if (!domain) return domain;
+            domain = domain.trim();
+            // Если уже есть протокол, вернуть как есть
+            if (domain.startsWith('http://') || domain.startsWith('https://')) {
+                return domain;
+            }
+            // Добавить https://
+            return 'https://' + domain;
+        }
 
         function showMessage(text, type = 'success') {
             const msg = document.getElementById('message');
@@ -352,8 +364,11 @@
         async function addDomain(event) {
             event.preventDefault();
             const step = document.getElementById('step').value;
-            const domain = document.getElementById('domain').value;
+            let domain = document.getElementById('domain').value.trim();
             const active = document.getElementById('active').checked;
+
+            // Нормализовать домен (добавить https:// если нет)
+            domain = normalizeDomain(domain);
 
             try {
                 const response = await fetch(`${API_BASE}/api/add-domain`, {
@@ -387,9 +402,9 @@
                 return;
             }
 
-            // Разбить на строки и очистить
+            // Разбить на строки, очистить и нормализовать
             const domains = domainsText.split('\n')
-                .map(d => d.trim())
+                .map(d => normalizeDomain(d.trim()))
                 .filter(d => d.length > 0);
 
             if (domains.length === 0) {
