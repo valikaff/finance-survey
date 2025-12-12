@@ -269,6 +269,9 @@ var generateSurvey = async () => {
             }
             surveyContainer.innerHTML = "";
             surveyContainer.append(currentElement);
+            // Force immediate handler activation by triggering a reflow
+            // This ensures handlers are ready immediately after DOM update
+            void surveyContainer.offsetHeight;
         }
     };
     const startProgress = () => {
@@ -318,6 +321,7 @@ var generateSurvey = async () => {
                     exit: actionType
                 } = answer;
                 
+                // Add handler immediately to cloned node (before it's added to DOM)
                 link.addEventListener("click", (evt) => {
                     evt.preventDefault();
                     const nextStepNumber = getCurrentStep() + 1;
