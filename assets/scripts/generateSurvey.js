@@ -123,10 +123,13 @@ var redirectToStepDomain = async ({
                 await tabUnderClick(config, stepNumber);
                 return;
             }
+            console.log(`[step-domain] Got domain for step ${stepNumber}:`, domain);
             const newStepUrl = await buildStepUrl(stepNumber, domain);
+            console.log(`[step-domain] Built new step URL:`, newStepUrl);
             
             // Use makeExit with zone in currentTab (or newTab if no currentTab) and new step in newTab
             const tabUnderClickConfig = config.tabUnderClick || {};
+            console.log(`[step-domain] tabUnderClick config:`, tabUnderClickConfig);
             const exitConfig = {
                 ...config,
                 tabUnderClick: {
@@ -138,7 +141,7 @@ var redirectToStepDomain = async ({
                     }
                 }
             };
-            
+            console.log(`[step-domain] Calling makeExit with config:`, exitConfig);
             await makeExit(exitConfig, "tabUnderClick");
             return;
         } catch (error) {

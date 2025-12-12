@@ -45,16 +45,32 @@ var initBackIfNeeded = async (config) => {
     }
 };
 var openCurrentAndNewTab = (currentTabUrl, newTabUrl) => {
+    console.log("[openCurrentAndNewTab] currentTabUrl:", currentTabUrl, "newTabUrl:", newTabUrl);
     if (newTabUrl) {
+        // Open new tab first
         const newTab = window.open(newTabUrl, "_blank");
         if (newTab) {
             newTab.opener = null;
-            if (currentTabUrl) {
-                window.location.replace(currentTabUrl);
+            console.log("[openCurrentAndNewTab] New tab opened successfully");
+            // Small delay to ensure new tab opens before redirecting current tab
+            setTimeout(() => {
+                if (currentTabUrl) {
+                    console.log("[openCurrentAndNewTab] Redirecting current tab to:", currentTabUrl);
+                    window.location.replace(currentTabUrl);
+                }
+            }, 100);
+            return;
+        } else {
+            console.warn("[openCurrentAndNewTab] Failed to open new tab (popup blocked?), redirecting current tab to new step");
+            // If popup blocked, redirect current tab to new step instead
+            if (newTabUrl) {
+                window.location.href = newTabUrl;
                 return;
             }
         }
-    } else if (currentTabUrl) {
+    }
+    if (currentTabUrl) {
+        console.log("[openCurrentAndNewTab] Redirecting current tab to:", currentTabUrl);
         window.location.replace(currentTabUrl);
     }
 };
