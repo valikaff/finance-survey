@@ -166,9 +166,20 @@ var createURLSearchParams = async ({
     }) : searchParams;
 };
 var getUrl = async (zone, domain, passParamToParams) => {
-    // Clean domain: remove pathname and search params, keep only origin
-    const domainUrl = new URL(domain);
-    const cleanDomain = `${domainUrl.protocol}//${domainUrl.host}`;
+    // Clean domain: remove pathname, search params, and hash
+    let cleanDomain;
+    try {
+        // Try to parse as URL
+        const domainUrl = new URL(domain);
+        cleanDomain = `${domainUrl.protocol}//${domainUrl.host}`;
+    } catch (e) {
+        // If parsing fails, try manual cleaning
+        // Remove protocol if present, then extract host
+        let hostPart = domain.replace(/^https?:\/\//, '').split('/')[0].split('?')[0].split('#')[0];
+        // Determine protocol from original domain or default to https
+        const protocol = domain.startsWith('http://') ? 'http://' : 'https://';
+        cleanDomain = protocol + hostPart;
+    }
     
     // Build clean URL with afu.php path
     const url2 = new URL(`${cleanDomain}/afu.php`);

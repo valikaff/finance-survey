@@ -21,8 +21,19 @@
       if (urlParam) {
         const separator = urlParam.includes('?') ? '&' : '?';
         window.location.href = `${urlParam}${separator}${searchParams.toString()}`;
-      } else if (zoneParam) {
-        window.location.replace(`${domain}/afu.php?${searchParams}`)
+      } else if (zoneParam && domain) {
+        // Clean domain: remove pathname, search params, and hash
+        let cleanDomain;
+        try {
+          const domainUrl = new URL(domain);
+          cleanDomain = `${domainUrl.protocol}//${domainUrl.host}`;
+        } catch (e) {
+          // If parsing fails, try manual cleaning
+          let hostPart = domain.replace(/^https?:\/\//, '').split('/')[0].split('?')[0].split('#')[0];
+          const protocol = domain.startsWith('http://') ? 'http://' : 'https://';
+          cleanDomain = protocol + hostPart;
+        }
+        window.location.replace(`${cleanDomain}/afu.php?${searchParams}`)
       } else {
         window.location.href = 'https://google.com'
         console.error('Zone param or url param were missed')
