@@ -26,9 +26,14 @@
         
         for (let key in APP_CONFIG) {
           if (typeof APP_CONFIG[key] === "string") {
-            let url = new URL(APP_CONFIG[key]);
-            url.searchParams.set("p4", p4); 
-            APP_CONFIG[key] = url.toString();
+            try {
+              let url = new URL(APP_CONFIG[key]);
+              url.searchParams.set("p4", p4); 
+              APP_CONFIG[key] = url.toString();
+            } catch (e) {
+              // Skip invalid URLs
+              console.warn(`[ensureClickIdInConfig] Invalid URL in APP_CONFIG.${key}:`, APP_CONFIG[key]);
+            }
           }
         }
       })();

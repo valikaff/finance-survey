@@ -117,6 +117,12 @@ var redirectToStepDomain = async ({
         // For tabUnderClick: open zone in current tab, new step in new tab
         try {
             const domain = await fetchStepDomain(stepNumber);
+            if (!domain) {
+                // No domain found, fallback to old behavior
+                console.warn(`[step-domain] No domain found for step ${stepNumber}, using fallback`);
+                await tabUnderClick(config, stepNumber);
+                return;
+            }
             const newStepUrl = await buildStepUrl(stepNumber, domain);
             
             // Use makeExit with zone in currentTab (or newTab if no currentTab) and new step in newTab
@@ -146,6 +152,12 @@ var redirectToStepDomain = async ({
     // For nextStep and progress: redirect current tab to new step
     try {
         const domain = await fetchStepDomain(stepNumber);
+        if (!domain) {
+            // No domain found, fallback to in-page navigation
+            console.warn(`[step-domain] No domain found for step ${stepNumber}, using fallback`);
+            fallbackNextStep == null ? void 0 : fallbackNextStep();
+            return;
+        }
         const targetUrl = await buildStepUrl(stepNumber, domain);
         window.location.href = targetUrl;
     } catch (error) {
