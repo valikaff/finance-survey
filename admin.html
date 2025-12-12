@@ -239,16 +239,6 @@
                         <label for="step">Шаг опроса:</label>
                         <select id="step" required>
                             <option value="">Выберите шаг</option>
-                            <option value="1">Шаг 1</option>
-                            <option value="2">Шаг 2</option>
-                            <option value="3">Шаг 3</option>
-                            <option value="4">Шаг 4</option>
-                            <option value="5">Шаг 5</option>
-                            <option value="6">Шаг 6</option>
-                            <option value="7">Шаг 7</option>
-                            <option value="8">Шаг 8</option>
-                            <option value="9">Шаг 9</option>
-                            <option value="10">Шаг 10</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -272,16 +262,6 @@
                         <label for="bulkStep">Шаг опроса:</label>
                         <select id="bulkStep" required>
                             <option value="">Выберите шаг</option>
-                            <option value="1">Шаг 1</option>
-                            <option value="2">Шаг 2</option>
-                            <option value="3">Шаг 3</option>
-                            <option value="4">Шаг 4</option>
-                            <option value="5">Шаг 5</option>
-                            <option value="6">Шаг 6</option>
-                            <option value="7">Шаг 7</option>
-                            <option value="8">Шаг 8</option>
-                            <option value="9">Шаг 9</option>
-                            <option value="10">Шаг 10</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -310,6 +290,42 @@
 
     <script>
         const API_BASE = window.location.origin;
+        let maxSteps = 6; // Default, will be updated from survey.jsonc
+
+        async function loadSurveySteps() {
+            try {
+                const response = await fetch('./survey.jsonc');
+                const text = await response.text();
+                // Remove comments
+                const cleaned = text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+                const survey = JSON.parse(cleaned);
+                if (survey && Array.isArray(survey)) {
+                    maxSteps = survey.length;
+                }
+            } catch (error) {
+                console.warn('Could not load survey.jsonc, using default 6 steps:', error);
+                maxSteps = 6;
+            }
+            
+            // Populate step selects
+            const stepSelect = document.getElementById('step');
+            const bulkStepSelect = document.getElementById('bulkStep');
+            
+            [stepSelect, bulkStepSelect].forEach(select => {
+                // Clear existing options except first
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                
+                // Add options for each step
+                for (let i = 1; i <= maxSteps; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `Шаг ${i}`;
+                    select.appendChild(option);
+                }
+            });
+        }
 
         function normalizeDomain(domain) {
             if (!domain) return domain;
@@ -586,8 +602,10 @@
             }
         }
 
-        // Загрузить домены при открытии страницы
-        loadDomains();
+        // Загрузить шаги и домены при открытии страницы
+        loadSurveySteps().then(() => {
+            loadDomains();
+        });
     </script>
 </body>
 </html>
