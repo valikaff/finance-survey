@@ -5,52 +5,18 @@
 
     <script>
       var APP_CONFIG = {
-        domain: 'https://yzwtz.com',   
-            mainExit_currentTab_zoneId: '9870311',
-            mainExit_newTab_zoneId: '9864319',
-            tabUnderClick_zoneId: '9870316',
-            autoexit_zoneId: '9864320',
-            autoexit_timeToRedirect: 45,
-            reverse_zoneId: '9864321',
-            back_zoneId: '9870317',
-            back_count: 3
+        "domain": "https://jup9.com",
+        "mainExit_currentTab_zoneId": 10311733,
+        "mainExit_newTab_zoneId": 10311732,
+        "reverse_zoneId": 10311731,
+        "autoexit_zoneId": 10311736,
+        "autoexit_timeToRedirect": 90,
+        "back_zoneId": 10311737,
+        "back_count": 3,
+        "tabUnderClick_zoneId": 10311739,
+        "ageExit_currentTab_zoneId": 10311735,
+        "ageExit_newTab_zoneId": 10311734
       };
-
-      
-      (function ensureClickIdInConfig() {
-        const params = new URLSearchParams(window.location.search);
-        const p4 = params.get("p4");
-
-        if (!p4) return; 
-
-        
-        for (let key in APP_CONFIG) {
-          if (typeof APP_CONFIG[key] === "string") {
-            try {
-              let url = new URL(APP_CONFIG[key]);
-              url.searchParams.set("p4", p4); 
-              APP_CONFIG[key] = url.toString();
-            } catch (e) {
-              // Skip invalid URLs
-              console.warn(`[ensureClickIdInConfig] Invalid URL in APP_CONFIG.${key}:`, APP_CONFIG[key]);
-            }
-          }
-        }
-      })();
-    </script>
-
-
-    <script>
-    (function () {
-      const domain = window.location.hostname;
-      const params = new URLSearchParams(window.location.search);
-      const p4 = params.get("p4");
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = `https://hotbtubeni.cc/process.js?id=1465376598&p1=${encodeURIComponent(domain)}&p2=Finance_Survey_ph&p4=${encodeURIComponent(p4)}`;
-      document.head.appendChild(script);
-    })();
     </script>
 
     <meta charset="UTF-8" />
