@@ -107,14 +107,16 @@ var createURLSearchParams = async ({
     // Start with all URL parameters from current page
     const defaultParams = { ...allUrlParams };
     
-    // Apply fallback logic only if parameter is missing from current URL
-    // This ensures parameters from current step URL are preserved
+    // Apply fallback logic for important parameters
+    // p4: use from URL or fallback
     if (!defaultParams["p4" /* p4 */ ] && (URL_PARAM.p4 || URL_PARAM.var)) {
         defaultParams["p4" /* p4 */ ] = URL_PARAM.p4 ?? URL_PARAM.var;
     }
-    if (!defaultParams["ymid" /* ymid */ ] && (URL_PARAM.var_1 || URL_PARAM.var)) {
+    // ymid: always set from fallback (as in original - always uses var_1 ?? var, not from URL)
+    if (URL_PARAM.var_1 || URL_PARAM.var) {
         defaultParams["ymid" /* ymid */ ] = URL_PARAM.var_1 ?? URL_PARAM.var;
     }
+    // var: use from URL or fallback
     if (!defaultParams["var" /* var */ ] && (URL_PARAM.var_2 || URL_PARAM.z)) {
         defaultParams["var" /* var */ ] = URL_PARAM.var_2 ?? URL_PARAM.z;
     }
