@@ -241,7 +241,11 @@ var setHeader = (headerIndex) => {
     });
 };
 var generateSurvey = async () => {
-    const survey = await readSurveyConfig();
+    // Load survey config and translations in parallel for faster initialization
+    const [survey, translations] = await Promise.all([
+        readSurveyConfig(),
+        getTranslations()
+    ]);
     const config = parseConfig(APP_CONFIG);
     console.log(config);
     if (!survey || !config) return;
@@ -287,7 +291,7 @@ var generateSurvey = async () => {
     };
     if (survey && survey.length) {
         const templateNode = document.querySelector(SURVEY_SELECTORS.step);
-        const translations = await getTranslations();
+        
         survey.forEach((question, ind) => {
             var _a;
             const clone = document.importNode(templateNode.content, true);
@@ -313,6 +317,7 @@ var generateSurvey = async () => {
                 const {
                     exit: actionType
                 } = answer;
+                
                 link.addEventListener("click", (evt) => {
                     evt.preventDefault();
                     const nextStepNumber = getCurrentStep() + 1;
@@ -351,4 +356,5 @@ var generateSurvey = async () => {
         nextStep();
     }
 };
+// Start initialization immediately when script loads
 generateSurvey();
