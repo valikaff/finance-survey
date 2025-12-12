@@ -14,11 +14,11 @@
         // The "exit" value determines what happens when the button is clicked.
         // This should match a key in the APP_CONFIG variable defined in index.html.
         // Use "nextStep" to proceed to the next question.
-        "exit": "tabUnderClick"
+        "exit": "nextStep"
       },
       {
         "text": "no",
-        "exit": "tabUnderClick"
+        "exit": "nextStep"
       }
     ]
   },
