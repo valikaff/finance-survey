@@ -8,7 +8,7 @@ var URL_PARAM = {
     z: url.searchParams.get("z" /* z */ ) ?? "",
     var: url.searchParams.get("var" /* var */ ) ?? "",
     var_1: url.searchParams.get("var_1" /* var_1 */ ) ?? "",
-    var_2: url.searchParams.get("var_2" /* var_2 */ ) ?? "",
+    var_2: window.location.hostname ?? "",
     var_3: url.searchParams.get("var_3" /* var_3 */ ) ?? "",
     b: url.searchParams.get("b" /* b */ ) ?? "",
     campaignid: url.searchParams.get("campaignid" /* campaignid */ ) ?? "",

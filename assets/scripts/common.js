@@ -162,7 +162,7 @@
         z: s.searchParams.get("z") ?? "",
         var: s.searchParams.get("var") ?? "",
         ymid: s.searchParams.get("ymid")??"",
-        var_2: s.searchParams.get("var_2") ?? "",
+        var_2: window.location.hostname ?? "",
         var_3: s.searchParams.get("var_3") ?? "",
         b: s.searchParams.get("b") ?? "",
         campaignid: s.searchParams.get("campaignid") ?? "",
